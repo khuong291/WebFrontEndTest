@@ -45,7 +45,25 @@ export function Output(props) {
 }
 
 export function isClosed(str) {
-  return false;
+  var count = 0
+  for (var i = 0; i < str.length; i++) {
+    const char = str.charAt(i)
+    if (char == '^') {
+      // Opening
+      count += 1
+    } else if (char == "$") {
+      // Closing
+      count -= 1
+    }
+
+    // If negative, it means a closing $ appears before any matching ^
+    if (count < 0) {
+      return false
+    }
+  }
+  
+  // 0 means all opening ^ has their matching closing $
+  return count == 0
 }
 
 export class ComputeIO extends React.Component {
