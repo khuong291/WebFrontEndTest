@@ -33,15 +33,29 @@
 import React from 'react';
 
 export function Input(props) {
-  return <div />;
+  return (
+    <div>
+      Input
+      <input type="text" value={props.value} onChange={props.onChange}/>
+    </div>
+  )
 }
 
 export function Button(props) {
-  return <div />;
+  return (
+    <div>
+      <input type="button" value="Click me" onClick={props.onClick} />
+    </div>
+  )
 }
 
 export function Output(props) {
-  return <div />;
+  return (
+    <div>
+      Output 
+      <input type="text" value={props.value} />
+    </div>
+  )
 }
 
 export function isClosed(str) {
@@ -67,12 +81,39 @@ export function isClosed(str) {
 }
 
 export class ComputeIO extends React.Component {
+  constructor(props) {
+    super(props)
+    
+    // Represent input and ouput from 2 text inputs
+    this.state = {
+      input: '',
+      output: ''
+    }
+
+    // Bind callbacks in the constructor
+    this.updateInput = this.updateInput.bind(this)
+    this.buttonTouched = this.buttonTouched.bind(this)
+  }
+
+  updateInput(event) {
+    this.setState({
+      input: event.target.value
+    })
+  }
+
+  buttonTouched(event) {
+    const result = isClosed(this.state.input) ? 'true' : 'false'
+    this.setState({
+      output: result
+    })
+  }
+
   render() {
     return (
       <section>
-        <Input />
-        <Button />
-        <Output />
+        <Input value={this.state.input} onChange={this.updateInput} />
+        <Button onClick={this.buttonTouched}/>
+        <Output value={this.state.output}/>
       </section>
     );
   }
