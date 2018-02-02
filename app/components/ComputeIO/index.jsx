@@ -36,7 +36,7 @@ export function Input(props) {
   return (
     <div>
       Input
-      <input type="text" value={props.value} onChange={props.onChange}/>
+      <input type="text" value={props.value} onChange={props.onChange} onKeyPress={props.onKeyPress}/>
     </div>
   )
 }
@@ -44,7 +44,7 @@ export function Input(props) {
 export function Button(props) {
   return (
     <div>
-      <input type="button" value="Click me" onClick={props.onClick} />
+      <input type="button" value="Click me" onClick={props.onClick}/>
     </div>
   )
 }
@@ -93,6 +93,7 @@ export class ComputeIO extends React.Component {
     // Bind callbacks in the constructor
     this.updateInput = this.updateInput.bind(this)
     this.buttonTouched = this.buttonTouched.bind(this)
+    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
   updateInput(event) {
@@ -101,17 +102,27 @@ export class ComputeIO extends React.Component {
     })
   }
 
-  buttonTouched(event) {
+  validate() {
     const result = isClosed(this.state.input) ? 'true' : 'false'
     this.setState({
       output: result
     })
   }
 
+  buttonTouched(event) {
+    this.validate()
+  }
+
+  handleKeyPress(event) {
+    if (event.key === 'Enter') {
+      this.validate()
+    }
+  }
+
   render() {
     return (
       <section>
-        <Input value={this.state.input} onChange={this.updateInput} />
+        <Input value={this.state.input} onChange={this.updateInput} onKeyPress={this.handleKeyPress}/>
         <Button onClick={this.buttonTouched}/>
         <Output value={this.state.output}/>
       </section>
